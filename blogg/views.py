@@ -193,11 +193,8 @@ def passwordchange(request):
         return HttpResponseRedirect('/')
 
 def detail(request):
-    if request.user.is_authenticated():
-        fm = User.objects.all()
-        return render(request, 'app/details.html', {'ff': fm})
-    else:
-        return HttpResponseRedirect('/')
+    fm = User.objects.all()
+    return render(request, 'app/details.html', {'ff': fm})
 
 
 def updatedetail(request, id):
@@ -285,13 +282,10 @@ def dpfile(request):
 
 
 def searchblogg(request):
-    if request.user.is_authenticated():
-        if request.method == 'POST':
-            search = request.POST['searchuserblogg']
-            fm = blogg.objects.filter(user__username__icontains=search)
-            aa = get_object_or_404(User, username=search)
-            aaa = aa.pk
-            ff = profile.objects.get(profile_id=aaa)
-    else:
-        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        search = request.POST['searchuserblogg']
+        fm = blogg.objects.filter(user__username__icontains=search)
+        aa = get_object_or_404(User, username=search)
+        aaa = aa.pk
+        ff = profile.objects.get(profile_id=aaa)
     return render(request, 'app/searchblogg.html', {'fm': fm, 'fp': ff, 'aa': aa, 'name': search})
